@@ -1,0 +1,11 @@
+<template name="projectRow">
+  <tr>
+    <td>{{trigramme}}</td>
+    <td>{{project}}</td>
+    <td></td>
+    <td></td>
+    {{#each days}}
+      {{> dayCell}}
+    {{/each}}
+  </tr>
+</template>

@@ -1,0 +1,18 @@
+<template name="addLine">
+  <tr>
+    <td></td>
+    <td>
+      <div class="form-group">
+        <input class="form-control typeahead" name="code" type="text"
+         placeholder="Code"
+         autocomplete="off" spellcheck="off"
+         data-source="imputationCodes" data-selected="codeSelected"/>
+      </div>
+    </td>
+    <td></td>
+    <td></td>
+    {{#each days}}
+      {{> dayCellNewLine}}
+    {{/each}}
+  </tr>
+</template>

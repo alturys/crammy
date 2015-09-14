@@ -1,0 +1,21 @@
+<template name="displayMonth">
+  <table class="table table-bordered">
+    <thead>
+        <tr>
+          <th>Trigramme</th>
+          <th>Imputation</th>
+          <th>Projet</th>
+          <th>UO</th>
+          {{#each days}}
+            {{> dayHeader}}
+          {{/each}}
+        </tr>
+    </thead>
+    <tbody>
+      {{#each userImputations}}
+        {{> projectRow}}
+      {{/each}}
+      {{>addLine}}
+    </tbody>
+  </table>
+</template>

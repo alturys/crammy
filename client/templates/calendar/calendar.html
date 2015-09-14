@@ -1,0 +1,15 @@
+<template name="calendar">
+  <ul class="nav nav-tabs">
+    {{#each months}}
+      {{> month}}
+    {{/each}}
+  </ul>
+  {{> displayMonth}}
+
+</template>
+
+<template name="test">
+  <p>
+    {{value}}
+  </p>
+</template>
