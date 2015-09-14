@@ -1,6 +1,9 @@
 Template.month.helpers({
-  log: function(){
-    return this;
+  active : function () {
+    var active = Session.get("selectedMonth");
+    if (active === this.index) {
+      return "active"
+    }
   }
 });
 

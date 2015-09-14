@@ -1,7 +1,7 @@
 var inputationsFunctions = CrammyApp.Functions.Imputations;
 
 Template.dayCellNewLine.events({
-  "change .calendarCell": function(e, t){
+  "change .calendar-cell": function(e, t){
     event.preventDefault();
 
     if (!inputationsFunctions.checkCodeExist(Session.get("newLineImputationCode"))) {

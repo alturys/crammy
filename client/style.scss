@@ -8,8 +8,6 @@
 }
 
 .navbtn{
-  // padding-left: 15px;
-  // padding-top: 15px;
   padding: 15px;
   padding-left: 20px;
 }
@@ -19,6 +17,22 @@
   padding-left: 60px;
 }
 
-.calendarCell {
+.calendar-cell {
   display: block; padding: 0; margin: 0; border: 0; width: 100%;
+}
+
+.calendar-padding {
+  margin-top: 40px;
+}
+
+.imputation-negative {
+  background-color: rgb(245, 199, 185);
+}
+
+.imputation-completed {
+  background-color: rgb(164, 222, 154);
+}
+
+.imputation-positive {
+  background-color: rgb(231, 225, 147);
 }

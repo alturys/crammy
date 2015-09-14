@@ -1,15 +1,26 @@
+//IMPORTS
 var inputationsFunctions = CrammyApp.Functions.Imputations;
-var cellImputation;
+
+var status;
+
+Template.dayCell.created = function () {
+  this.state = new ReactiveDict();
+  this.state.set("status", "");
+
+  if (moment()< this.data) {
+    this.state.set("status", "FUTURE");
+  }
+}
 
 Template.dayCell.rendered = function () {
-  console.log("CHECKING INPUTATIONS FOR " + this.data.toISOString());
-  console.log(this);
-  console.log(this.find(".calendarCell"));
-  var daysImputations = Imputations.find({date:this.data.toISOString()}).fetch();
-  var values = _.pluck(daysImputations,"value");
-  var sum = _.reduce(values, function(memo, value){ return memo + value; }, 0);
 
-  console.log(sum);
+  // console.log("CHECKING INPUTATIONS FOR " + this.data.toISOString());
+  // console.log(this);
+  // console.log(this.find(".calendarCell"));
+  // var daysImputations = Imputations.find({date:this.data.toISOString()}).fetch();
+  // var values = _.pluck(daysImputations,"value");
+  // var sum = _.reduce(values, function(memo, value){ return memo + value; }, 0);
+
 }
 
 Template.dayCell.helpers({
@@ -18,24 +29,33 @@ Template.dayCell.helpers({
     var parent = Template.parentData(1);
     var imputation = _.findWhere(parent,{date:this.toISOString()});
     if (imputation) {
-      cellImputation = imputation;//caching impuation to avoid further request for updates/deletes
       return inputationsFunctions.convertOutput(imputation.value);
     }
   },
-  rendered : function () {
-    console.log("CHECKING INPUTATIONS FOR " + this.toISOString());
+  status : function () {
+    if (Template.instance().state.get("status")==="FUTURE") {
+      return "";
+    }
     var daysImputations = Imputations.find({date:this.toISOString()}).fetch();
     var values = _.pluck(daysImputations,"value");
     var sum = _.reduce(values, function(memo, value){ return memo + value; }, 0);
-    console.log(sum);
+    var diff = inputationsFunctions.checkSum(sum);
+    if (diff < 0 ) {
+      return "imputation-negative";
+    }
+    if (diff === 0) {
+      return "imputation-completed";
+    }
+    return "imputation-positive";
   }
 });
 
 Template.dayCell.events({
-  "change .calendarCell": function(e, t){
+  "change .calendar-cell": function(e, t){
     event.preventDefault();
     var text = event.target.value||"";
-    if (text == "") {
+    var cellImputation =  Imputations.find({date:this.toISOString(),code : Template.parentData(1)[0].code}).fetch()[0];
+    if (text == ""&&cellImputation) {
       //here for delete imputation as the event will only be fired if imputations wasn't empty previously
       console.log("IMPLEMENTS DELETE IMPUTATION");
       console.log(cellImputation);
@@ -47,11 +67,21 @@ Template.dayCell.events({
 
     number = inputationsFunctions.convertInput(number);
 
-    Imputations.insert({
-      user : Meteor.userId(),
-      code : Template.parentData(1)[0].code,
-      date : this.toISOString(),
-      value : number
-    });
+    if (cellImputation) {
+      console.log("update :");
+      Imputations.update({_id:cellImputation._id}, {$set:{
+        value : number
+      }});
+    }
+
+    else {
+      console.log("create");
+      Imputations.insert({
+        user : Meteor.userId(),
+        code : Template.parentData(1)[0].code,
+        date : this.toISOString(),
+        value : number
+      });
+    }
   }
 });

@@ -16,3 +16,5 @@ underscore
 ian:accounts-ui-bootstrap-3
 accounts-password
 sergeyt:typeahead
+reactive-var
+reactive-dict
