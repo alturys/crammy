@@ -1,0 +1,17 @@
+<template name="supervisionRow">
+  {{#each userImputationByProject}}
+    {{> supervisionProjectRow}}
+  {{/each}}
+</template>
+
+<template name="supervisionProjectRow">
+  <tr>
+    <td>{{trigramme}}</td>
+    <td>{{project}}</td>
+    <td></td>
+    <td></td>
+    {{#each days}}
+      {{> supervisionDayCell}}
+    {{/each}}
+  </tr>
+</template>

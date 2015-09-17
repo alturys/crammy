@@ -1,0 +1,21 @@
+<template name="displayMonthSupervision">
+  <table class="table table-bordered calendar-padding">
+    <thead>
+        <tr>
+          <th>Trig</th>
+          <th>Imputation</th>
+          <th>Projet</th>
+          <th>UO</th>
+          {{#each days}}
+            {{> dayHeader}}
+          {{/each}}
+        </tr>
+    </thead>
+    <tbody>
+      {{#each userImputations}}
+        {{> supervisionRow}}
+      {{/each}}
+      {{>addLine}}
+    </tbody>
+  </table>
+</template>

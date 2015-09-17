@@ -12,16 +12,6 @@ Template.dayCell.created = function () {
   }
 }
 
-Template.dayCell.rendered = function () {
-
-  // console.log("CHECKING INPUTATIONS FOR " + this.data.toISOString());
-  // console.log(this);
-  // console.log(this.find(".calendarCell"));
-  // var daysImputations = Imputations.find({date:this.data.toISOString()}).fetch();
-  // var values = _.pluck(daysImputations,"value");
-  // var sum = _.reduce(values, function(memo, value){ return memo + value; }, 0);
-
-}
 
 Template.dayCell.helpers({
 //this is a moment object as we are in a template comming from a list of moments
@@ -33,10 +23,10 @@ Template.dayCell.helpers({
     }
   },
   status : function () {
-    if (Template.instance().state.get("status")==="FUTURE") {
+    if (moment()< this) {
       return "";
     }
-    var daysImputations = Imputations.find({date:this.toISOString()}).fetch();
+    var daysImputations = Imputations.find({user:Meteor.userId(),date:this.toISOString()}).fetch();
     var values = _.pluck(daysImputations,"value");
     var sum = _.reduce(values, function(memo, value){ return memo + value; }, 0);
     var diff = inputationsFunctions.checkSum(sum);
@@ -54,11 +44,9 @@ Template.dayCell.events({
   "change .calendar-cell": function(e, t){
     event.preventDefault();
     var text = event.target.value||"";
-    var cellImputation =  Imputations.find({date:this.toISOString(),code : Template.parentData(1)[0].code}).fetch()[0];
+    var cellImputation =  Imputations.find({user:Meteor.userId(),date:this.toISOString(),code : Template.parentData(1)[0].code}).fetch()[0];
     if (text == ""&&cellImputation) {
       //here for delete imputation as the event will only be fired if imputations wasn't empty previously
-      console.log("IMPLEMENTS DELETE IMPUTATION");
-      console.log(cellImputation);
       Imputations.remove(cellImputation._id);
       return;
     }
@@ -68,14 +56,12 @@ Template.dayCell.events({
     number = inputationsFunctions.convertInput(number);
 
     if (cellImputation) {
-      console.log("update :");
       Imputations.update({_id:cellImputation._id}, {$set:{
         value : number
       }});
     }
 
     else {
-      console.log("create");
       Imputations.insert({
         user : Meteor.userId(),
         code : Template.parentData(1)[0].code,
