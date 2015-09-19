@@ -3,6 +3,7 @@ var inputationsFunctions = CrammyApp.Functions.Imputations;
 Template.dayCellNewLine.events({
   "change .calendar-cell": function(e, t){
     event.preventDefault();
+    console.log("NEW LINE USER");
 
     if (!inputationsFunctions.checkCodeExist(Session.get("newLineImputationCode"))) {
       alert("Code d'imputation inconnu");

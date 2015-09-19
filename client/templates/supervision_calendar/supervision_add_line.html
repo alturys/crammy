@@ -1,0 +1,25 @@
+<template name="addSupervisionLine">
+  <tr>
+    <td>
+      <div class="form-group">
+        <input id="supervision-new-line-user" class="form-control typeahead user" name="user" type="text"
+         placeholder="trigramme"
+         autocomplete="off" spellcheck="off"
+         data-source="userTrig" data-selected="userSelected"/>
+      </div>
+    </td>
+    <td>
+      <div class="form-group">
+        <input id="supervision-new-line-code" class="form-control typeahead code" name="code" type="text"
+         placeholder="code"
+         autocomplete="off" spellcheck="off"
+         data-source="imputationCodes" data-selected="codeSelected"/>
+      </div>
+    </td>
+    <td></td>
+    <td></td>
+    {{#each days}}
+      {{> supervisionDayCellNewLine}}
+    {{/each}}
+  </tr>
+</template>

@@ -1,21 +1,26 @@
 <template name="displayMonth">
-  <table class="table table-bordered calendar-padding">
-    <thead>
-        <tr>
-          <th>Trig</th>
-          <th>Imputation</th>
-          <th>Projet</th>
-          <th>UO</th>
-          {{#each days}}
-            {{> dayHeader}}
+  <div class="panel panel-default content-block">
+    <div class="panel-heading">CRAM HENIX</div>
+    <div class="panel-body">
+      <table class="calendar-table">
+        <thead>
+            <tr>
+              <th class="calendar-column-small">Trigramme</th>
+              <th class="calendar-column-small">Imputation</th>
+              <th class="calendar-column-medium">Projet</th>
+              <th class="calendar-column-small">UO</th>
+              {{#each days}}
+                {{> dayHeader}}
+              {{/each}}
+            </tr>
+        </thead>
+        <tbody>
+          {{#each userImputations}}
+            {{> projectRow}}
           {{/each}}
-        </tr>
-    </thead>
-    <tbody>
-      {{#each userImputations}}
-        {{> projectRow}}
-      {{/each}}
-      {{>addLine}}
-    </tbody>
-  </table>
+          {{>addLine}}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>

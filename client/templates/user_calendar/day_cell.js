@@ -1,5 +1,6 @@
 //IMPORTS
 var inputationsFunctions = CrammyApp.Functions.Imputations;
+var calendarFunctions = CrammyApp.Functions.Calendar;
 
 var status;
 
@@ -43,31 +44,41 @@ Template.dayCell.helpers({
 Template.dayCell.events({
   "change .calendar-cell": function(e, t){
     event.preventDefault();
-    var text = event.target.value||"";
-    var cellImputation =  Imputations.find({user:Meteor.userId(),date:this.toISOString(),code : Template.parentData(1)[0].code}).fetch()[0];
-    if (text == ""&&cellImputation) {
-      //here for delete imputation as the event will only be fired if imputations wasn't empty previously
-      Imputations.remove(cellImputation._id);
-      return;
-    }
+    var userId = Meteor.userId();
+    var imputationCode = Template.parentData(1)[0].code;
+    var oneMoment = this;
+    var imputationValue = event.target.value||"";
 
-    var number = parseFloat(text);//will clean strange imputs like 0.5sdfh -> 0.5
+    calendarFunctions.addImputation(userId, imputationCode, oneMoment, imputationValue);
 
-    number = inputationsFunctions.convertInput(number);
-
-    if (cellImputation) {
-      Imputations.update({_id:cellImputation._id}, {$set:{
-        value : number
-      }});
-    }
-
-    else {
-      Imputations.insert({
-        user : Meteor.userId(),
-        code : Template.parentData(1)[0].code,
-        date : this.toISOString(),
-        value : number
-      });
-    }
   }
+  // "change .calendar-cell": function(e, t){
+  //   event.preventDefault();
+  //   var text = event.target.value||"";
+  //   var cellImputation =  Imputations.find({user:Meteor.userId(),date:this.toISOString(),code : Template.parentData(1)[0].code}).fetch()[0];
+  //   if (text == ""&&cellImputation) {
+  //     //here for delete imputation as the event will only be fired if imputations wasn't empty previously
+  //     Imputations.remove(cellImputation._id);
+  //     return;
+  //   }
+  //
+  //   var number = parseFloat(text);//will clean strange imputs like 0.5sdfh -> 0.5
+  //
+  //   number = inputationsFunctions.convertInput(number);
+  //
+  //   if (cellImputation) {
+  //     Imputations.update({_id:cellImputation._id}, {$set:{
+  //       value : number
+  //     }});
+  //   }
+  //
+  //   else {
+  //     Imputations.insert({
+  //       user : Meteor.userId(),
+  //       code : Template.parentData(1)[0].code,
+  //       date : this.toISOString(),
+  //       value : number
+  //     });
+  //   }
+  // }
 });
